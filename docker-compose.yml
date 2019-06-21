@@ -50,7 +50,7 @@ services:
       - ROCKETCHAT_USER=bot
       - ROCKETCHAT_PASSWORD=botpassword
       - BOT_NAME=bot
-  # pod add mais screpits instalados por npm
+  # pod add mais scripts instalados por npm
       - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
     depends_on:
       - rocketchat
