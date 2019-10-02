@@ -12,28 +12,24 @@ services:
       - ROOT_URL=http://localhost:3000
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
-#       - MAIL_URL=smtp://smtp.email                se houvesse email server
-#       - HTTP_PROXY=http://proxy.domain.com        se houvesse proxy HTTP server
-#       - HTTPS_PROXY=http://proxy.domain.com       se houvesse proxy HTTPS server
     depends_on:
       - mongo
     ports:
       - 3000:3000
     labels:
       - "traefik.backend=rocketchat"
-      - "traefik.frontend.rule=Host: pc-narak"
+      - "traefik.frontend.rule=Host: URhOST"
 
   mongo:
     image: mongo:3.2
     restart: unless-stopped
     volumes:
      - ./data/db:/data/db
-     #- ./data/dump:/dump                           serve para fazer um dump do banco
+     #- ./data/dump:/dump
     command: mongod --smallfiles --oplogSize 128 --replSet rs0
     labels:
       - "traefik.enable=false"
 
-  # este container serve para subir o job de command de init replica e se autoremove se nao tiver uso
   mongo-init-replica:
     image: mongo:3.2
     command: 'mongo mongo/rocketchat --eval "rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})"'
@@ -48,7 +44,7 @@ services:
       - ROCKETCHAT_URL=rocketchat:3000
       - ROCKETCHAT_ROOM=GENERAL
       - ROCKETCHAT_USER=bot
-      - ROCKETCHAT_PASSWORD=botpassword
+      - ROCKETCHAT_PASSWORD=password
       - BOT_NAME=bot
   # pod add mais scripts instalados por npm
       - EXTERNAL_SCRIPTS=hubot-help,hubot-seen,hubot-links,hubot-diagnostics
